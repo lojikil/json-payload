@@ -18,7 +18,6 @@ The output is relatively simple:
 
 # Ideas
 
-- types: `foo:1:int` should result in an integer output
 - arrays: `foo:[1,2,3,4,5]`, or `foo:[1,2,3,4,5]:int`
 - `multi.level.objects=test`
 - JSON => CSRF payloads

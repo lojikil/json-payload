@@ -6,6 +6,7 @@ import (
     "net/url"
     "os"
     "strings"
+    "strconv"
 )
 
 /* TODO:
@@ -26,6 +27,26 @@ func main() {
         } else if l == 2 {
             res[vals[0]] = vals[1]
         } else if l == 3 {
+            switch vals[2] {
+                case "int":
+                    j, err := strconv.Atoi(vals[1])
+
+                    if err != nil {
+                        break
+                    }
+
+                    res[vals[0]] = j
+                case "float":
+                    f, err := strconv.ParseFloat(vals[1], 64)
+
+                    if err != nil {
+                        break
+                    }
+
+                    res[vals[0]] = f
+                default:
+                    res[vals[0]] = vals[1];
+            }
             fmt.Println("name with value & type")
         } else {
             fmt.Println("error");
