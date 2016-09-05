@@ -34,7 +34,7 @@ func parse_quotedstring(src string, offset int) (string, int, bool) {
     svalue := make([]byte, 256)
     state := Start
     validx := 0
-    for idx := offset; idx < len(src); idx++ {
+    for idx := offset; idx < len(src); idx, validx = idx + 1, validx + 1 {
         if src[idx] == '\\' {
             if src[idx + 1] == 'n' {
                 svalue[validx] = '\n'
@@ -51,13 +51,13 @@ func parse_quotedstring(src string, offset int) (string, int, bool) {
         } else {
             svalue[validx] = src[idx]
         }
-        validx++
+
         if state == End {
             offset = idx
             break
         }
     }
-    return string(svalue[0:validx - 1]), offset, !(state == End)
+    return string(svalue[0:validx]), offset, !(state == End)
 }
 
 func parse(src string) (string, interface{}, int) {
@@ -123,8 +123,6 @@ func parse(src string) (string, interface{}, int) {
             case TypeTransfer:
                 if idx + 1 >= len(src) {
                     state = End
-                } else if src[idx] == '"' {
-                    state = TypeTransfer
                 } else if src[idx] == ':' {
                     state = TypeDec
                 } else {
