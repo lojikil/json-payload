@@ -24,6 +24,14 @@ A more complex example is:
     167
     %7B%22foo%22%3A%22bar+baz+blah%22%2C%22foo2%22%3A%22%22%2C%22foo3%22%3A%22bar3%22%2C%22test%22%3A%22test+this+thing%22%2C%22this+is+a+key+test%22%3A%22test+value%22%7D
 
+Or one with arrays:
+
+    $ ./json-payload 'test:[1 2 "some other data" 3 blah]'
+    47
+    {"test":["1","2","some other data","3","blah"]}
+    89
+    %7B%22test%22%3A%5B%221%22%2C%222%22%2C%22some+other+data%22%2C%223%22%2C%22blah%22%5D%7D
+
 # Ideas
 
 - arrays: `foo:[1,2,3,4,5]`, or `foo:[1,2,3,4,5]:int`

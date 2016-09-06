@@ -21,12 +21,14 @@ const (
     TypeDec
     End
     Error
+    Word
 )
 
 
 /* TODO:
  * - DONE: a proper parser, so that we can escape ':' in strings
- * - array support, including typed arrays: `test:[1, 2, 3, 4, 5]:int`
+ * - DONE: array support 'test:[1 2 3 4 5]'
+ * - typed arrays: `test:[1, 2, 3, 4, 5]:int`
  * - `multi.level.objects=foo` need to figure out merging these too...
  */
 
@@ -67,6 +69,7 @@ func parse(src string) (string, interface{}, int) {
      * as a properly parsed structure
      */
     state := Start
+    substate := Word
     offset := 0
     tmperror := false
     var name string
@@ -120,6 +123,44 @@ func parse(src string) (string, interface{}, int) {
                 } else {
                     state = TypeTransfer
                 }
+            case ValArr:
+                tmpval := make([]string, 0)
+                var tmpstr string
+                substate = Start
+                for ; idx < len(src); idx++ {
+                    switch substate {
+                        case Start:
+                            if src[idx] == ']' {
+                                state = TypeTransfer
+                                break
+                            } else if src[idx] == '"' {
+                                tmpstr, idx, tmperror = parse_quotedstring(src, idx + 1)
+                                if tmperror {
+                                    state = Error
+                                    break
+                                }
+                                tmpval = append(tmpval, tmpstr)
+                            } else if src[idx] == ',' || src[idx] == ' ' {
+                                continue
+                            } else {
+                                substate = Word
+                                offset = idx
+                            }
+                        case Word:
+                            if src[idx] == ']' {
+                                state = TypeTransfer
+                                tmpval = append(tmpval, string(src[offset:idx]))
+                                break
+                            } else if src[idx] == '"' {
+                                state = Error
+                                break
+                            } else if src[idx] == ',' || src[idx] == ' ' {
+                                substate = Start
+                                tmpval = append(tmpval, string(src[offset:idx]))
+                            }
+                    }
+                }
+                retval = tmpval
             case TypeTransfer:
                 if idx + 1 >= len(src) {
                     state = End
