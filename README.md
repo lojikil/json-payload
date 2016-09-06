@@ -35,6 +35,7 @@ Or one with arrays:
 # Ideas
 
 - arrays: `foo:[1,2,3,4,5]`, or `foo:[1,2,3,4,5]:int`
+- Alliteration: `./json-payload key1 val1 key2 val2`
 - `multi.level.objects=test`
 - JSON => CSRF payloads
 
