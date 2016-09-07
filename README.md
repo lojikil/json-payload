@@ -34,10 +34,21 @@ Or one with arrays:
 
 # Ideas
 
-- arrays: `foo:[1,2,3,4,5]`, or `foo:[1,2,3,4,5]:int`
-- Alliteration: `./json-payload key1 val1 key2 val2`
+- DONE: arrays: `foo:[1,2,3,4,5]`, or `foo:[1,2,3,4,5]:int`
+- ~Alliteration: `./json-payload key1 val1 key2 val2`~ (see below)
 - `multi.level.objects=test`
 - JSON => CSRF payloads
+
+# Alliteration
+
+I had a thought that we could use alliteration, alternating keys & values thusly: `./json-payload key1 val1 key2 val2`
+
+This introduces two problems:
+
+- how do we then encode types? as `:type` coercions applied to the end of a value, similar to what is done now?
+- how do we distinguish from the ambiguous `./json-payload foo bar baz`? Is `foo` the keyword with empty value, or is `baz`?
+
+... which I had originally thought of, and then forgot in my sleepiness...
 
 # License
 
